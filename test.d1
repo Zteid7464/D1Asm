@@ -1,0 +1,10 @@
+ldi 1
+add 0
+mdr 15
+ldi 0
+
+loop: add 15
+jnc loop
+
+done:
+    halt

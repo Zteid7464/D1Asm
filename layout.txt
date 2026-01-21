@@ -1,0 +1,10 @@
+; this is a comment
+
+label: bell
+
+label2:
+    add 4
+
+jic label2
+call 0
+halt
