@@ -176,7 +176,7 @@ int writeProgram(Instruction* program, Label* labels, int programLength, char* p
         return -1;
     }
     
-    for (int i = 0; i <= programLength; i++) {
+    for (int i = 0; i < programLength; i++) {
         Instruction currentInst = program[i];
 
         if (currentInst.opcode >> 4 == 0x07) {  // no parameter instructions
