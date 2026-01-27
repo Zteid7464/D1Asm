@@ -7,6 +7,7 @@
 #endif
 
 #define MAX_LABEL_NAME_LENGTH 23
+#define NOPARAMOPCODE 0x0
 
 typedef struct {
     char name[MAX_LABEL_NAME_LENGTH+1];   // the name of the label

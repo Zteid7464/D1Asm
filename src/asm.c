@@ -119,7 +119,7 @@ int isInstruction(const char *line, Instruction *inst) {
                     printf("ERROR parameter %d to big!\n", inst->parameter);
                 } else if (inst->parameter > 63) {
                     printf("ERROR address %d to big!\n", inst->parameter);
-                } else if (inst->opcode >> 4 == 0x00) {
+                } else if (inst->opcode >> 4 == NOPARAMOPCODE) {
                     printf("ERROR this instruction does not have parameters");
                 }
             }
@@ -180,7 +180,7 @@ int writeProgram(Instruction* program, Label* labels, int programLength, char* p
     for (int i = 0; i < programLength; i++) {
         Instruction currentInst = program[i];
 
-        if (currentInst.opcode >> 4 == 0x07) {  // no parameter instructions
+        if (currentInst.opcode >> 4 == NOPARAMOPCODE) {  // no parameter instructions
             fwrite(&currentInst.opcode, 1, 1, programFile);
         } else if (currentInst.opcode < 0x80) { // numerric constant instructions
             uint8_t fullInst = currentInst.opcode | currentInst.parameter;  // merge them togeter
