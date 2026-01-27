@@ -1,8 +1,15 @@
 ldi 1
 mdr 15
 
-loop: add 15
-mds
+ldi 0   ; we will use 2 as our loop counter
+mdr 2   
+
+loop:
+
+mrs 2
+add 15
+mdr 2
+
 jnc loop
 
 done:

@@ -119,7 +119,7 @@ int isInstruction(const char *line, Instruction *inst) {
                     printf("ERROR parameter %d to big!\n", inst->parameter);
                 } else if (inst->parameter > 63) {
                     printf("ERROR address %d to big!\n", inst->parameter);
-                } else if (inst->opcode >> 4 == 0x07) {
+                } else if (inst->opcode >> 4 == 0x00) {
                     printf("ERROR this instruction does not have parameters");
                 }
             }
