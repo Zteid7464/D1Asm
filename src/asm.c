@@ -92,6 +92,7 @@ int isInstruction(const char *line, Instruction *inst) {
     for (int i = 0; i < INST_COUNT; i++) {
         if (strcmpwse(cpyLine, InstList, currentChar, i*5, ' ')) { // i*4 because there is an instruction every 5 chars in InstList
             inst->opcode = InstOpCode[i];
+            printf("%hhx", inst->opcode);
 
             // use the original version of line again so the case of labels is preserved
             // get the parameters
@@ -154,9 +155,9 @@ _Bool strcmpwse(const char* s1, const char* s2, const int si1, const int si2, ch
     int i1 = si1;
     int i2 = si2;
 
-    while (s1[i1]==s2[i2]) {
+    while (s1[i1]==s2[i2] || (s1[i1] == '\n' || s2[i2] == '\n')) {
         // if both s1 and s2 are equal to the terminator or null they are equal
-        if ((s1[i1] == 0 && s2[i2] == 0) || (s1[i1] == term && s2[i2] == term)) {
+        if ((s1[i1] == 0 && s2[i2] == 0) || (s1[i1] == term && s2[i2] == term) || (s1[i1] == '\n' && s2[i2] == term) || (s1[i1] == term && s2[i2] == '\n')) {
             return 1;
         }
 

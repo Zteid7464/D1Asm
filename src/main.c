@@ -29,7 +29,7 @@ int main (int argc, char* argv[]) {
     unsigned currentLine = 0;
     unsigned currentAddress = 0;
     while (fgets(line, 512, asmFile) != NULL) {
-        printf("LINE %d:\n", currentLine);
+        printf("LINE %d: ", currentLine);
         // give the labels addresses
         for (int i = 0; i < 64; i++) {
             if (labels[i].line==currentLine)
@@ -40,6 +40,7 @@ int main (int argc, char* argv[]) {
             currentAddress++;   // only update the address if we have an actual instruction
         }
 
+        printf ("\n");
         currentLine++;
     }
 
