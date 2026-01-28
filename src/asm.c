@@ -155,9 +155,9 @@ _Bool strcmpwse(const char* s1, const char* s2, const int si1, const int si2, ch
     int i1 = si1;
     int i2 = si2;
 
-    while (s1[i1]==s2[i2] || (s1[i1] == '\n' || s2[i2] == '\n')) {
-        // if both s1 and s2 are equal to the terminator or null they are equal
-        if ((s1[i1] == 0 && s2[i2] == 0) || (s1[i1] == term && s2[i2] == term) || (s1[i1] == '\n' && s2[i2] == term) || (s1[i1] == term && s2[i2] == '\n')) {
+    while (s1[i1]==s2[i2] || (s1[i1] == '\n' || s2[i2] == '\n') || (s1[i1] == 0 || s2[i2] == 0)) {  // do this because it can be 'equal even if one of them is whitespace or null'
+        // if both s1 and s2 are equal to the terminator or null they are equal. You love this line right?
+        if ((s1[i1] == 0 && s2[i2] == 0) || (s1[i1] == term && s2[i2] == term) || (s1[i1] == '\n' && s2[i2] == term) || (s1[i1] == term && s2[i2] == '\n') || (s1[i1] == 0 && s2[i2] == term) || (s1[i1] == term && s2[i2] == 0)) {
             return 1;
         }
 
