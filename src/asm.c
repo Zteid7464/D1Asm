@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <endian.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,7 +20,7 @@ int isLabel(const char* line, char* labelName) {
     _Bool potentialLengthError = 0;
 
     while (1) {
-        if (!isblank(c))    // this detects if there was allready a non blank character
+        if (!isspace(c))    // this detects if there was allready a non blank character
             characters = 1;
 
         switch (c) {
@@ -155,18 +156,39 @@ _Bool strcmpwse(const char* s1, const char* s2, const int si1, const int si2, ch
     int i1 = si1;
     int i2 = si2;
 
-    while (s1[i1]==s2[i2] || (s1[i1] == '\n' || s2[i2] == '\n') || (s1[i1] == 0 || s2[i2] == 0)) {  // do this because it can be 'equal even if one of them is whitespace or null'
-        // if both s1 and s2 are equal to the terminator or null they are equal. You love this line right?
-        if ((s1[i1] == 0 && s2[i2] == 0) || (s1[i1] == term && s2[i2] == term) || (s1[i1] == '\n' && s2[i2] == term) || (s1[i1] == term && s2[i2] == '\n') || (s1[i1] == 0 && s2[i2] == term) || (s1[i1] == term && s2[i2] == 0)) {
+    _Bool wasEqual = 0;
+
+    // when s1 and s2 where equal before and then ther eighter are equal to null, term, \n or blank. the string is equal. They don't have to be the same thing
+    while (1) {
+        if ((isSpaceTermNull(s1[i1], term) && isSpaceTermNull(s2[i2], term)) && wasEqual)
             return 1;
-        }
+
+
+        if (s1[i1] != s2[i2])
+            return 0;
+
+        wasEqual = 1;
 
         i1++;
         i2++;
     }
 
+    // while (s1[i1]==s2[i2] || (s1[i1] == '\n' || s2[i2] == '\n') || (s1[i1] == 0 || s2[i2] == 0)) {  // do this because it can be 'equal even if one of them is whitespace or null'
+    //     // if both s1 and s2 are equal to the terminator or null they are equal. You love this line right?
+    //     if ((s1[i1] == 0 && s2[i2] == 0) || (s1[i1] == term && s2[i2] == term) || (s1[i1] == '\n' && s2[i2] == term) || (s1[i1] == term && s2[i2] == '\n') || (s1[i1] == 0 && s2[i2] == term) || (s1[i1] == term && s2[i2] == 0)) {
+    //         return 1;
+    //     }
+
+        // i1++;
+        // i2++;
+    // }
+
 
     return 0;
+}
+
+_Bool isSpaceTermNull(const char c, const char term) {
+    return isspace(c) || c == 0 || c == term ? 1 : 0;
 }
 
 int writeProgram(Instruction* program, Label* labels, int programLength, char* programFileName) {

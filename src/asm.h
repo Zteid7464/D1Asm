@@ -38,5 +38,8 @@ int skipColon(const char* s);
 // string compare with specified end. will compare s1 starting at si1 with s2 starting at si2 util null or term is hit
 _Bool strcmpwse(const char* s1, const char* s2, const int si1, const int si2, char term);
 
+// will return 1 if c is a "space", a null terminator or term. Otherwise return 0
+_Bool isSpaceTermNull(const char c, const char term);
+
 // will write out the assembled program to file.
 int writeProgram(Instruction* program, Label* labels, int programLength, char* programFileName);

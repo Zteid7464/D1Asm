@@ -1,0 +1,9 @@
+call output7
+
+done:
+    halt
+
+output7:
+    ldi 7
+    out
+    ret
