@@ -21,5 +21,5 @@ call gameloop   ; loop. (the call gets used as a unconditional jump here)
 
 
 done:
-    bell
+    bell    ; notify the user that he won
     halt

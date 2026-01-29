@@ -1,0 +1,64 @@
+ldi 14  ; we will do 15/5
+mdr 5
+ldi 3
+mdr 0
+
+ldi 0   ; set things to 0
+mdr 2
+mdr 6
+
+; divide M5 by M0 the result will be in M2 and the remainder in M6
+ldi 12  ; we will use M14 as our loop counter set it to 16-4
+mdr 14
+
+divloop:
+
+call lsh8   ; shift it left. Also in the beginin
+
+mrs 2       ; shift the result to the left
+lsh
+mdr 2       ; store it back
+
+mrs 6       ; load the dividee that was shifted in
+sub 0       ; subtract the divident.
+jnc skipStore   ; the carry flag gets only set when the result is positiv
+
+mdr 6       ; if the result was positive store it back
+
+ldi 1       ; load one into source
+mds         ; move it into source
+or 2        ; do result | 1
+mdr 2       ; store it back
+
+skipStore:
+
+ldi 1       ; move 1 into the source
+mds
+add 14      ; add 1 to our loop counter
+mdr 14      ; store it back
+jnc divloop ; loop back if there was no carry
+
+done:
+    halt
+
+; will do M6-M5 << 1 and store the result back in M6-M5
+lsh8:
+    mrs 5   ; load the LSdB
+    lsh     ; shift it left
+    mdr 5   ; store the LSdB
+
+    ldi 0   ; load 0 by default
+    jnc skipOneLsh     ; load 1 if the carry flag is set
+    
+    ldi 1
+
+skipOneLsh:
+    mdr 15  ; store the 1 or 0 so we can use it later
+
+    mrs 6   ; load the MSdB
+    lsh     ; shift it left
+    mds     ; move it back to source
+    or 15   ; if the msb of the LSdB was set, set the lsb of the MSdB
+    mdr 6  ; store the MSdB
+
+    ret     ; return

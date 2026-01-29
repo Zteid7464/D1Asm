@@ -1,7 +1,7 @@
-ldi 13
+ldi 5
 mdr 15
 
-ldi 7
+ldi 5
 mds
 sub 15
 
