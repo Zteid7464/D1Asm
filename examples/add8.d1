@@ -1,0 +1,35 @@
+ldi 3   ; our first value will be 37h
+mdr 4
+ldi 7
+mdr 3
+
+ldi 4   ; the second value will be 4Dh
+mdr 6
+ldi 13
+mdr 5
+
+call add8
+
+done:
+    halt
+
+; will do M4-M3 + M6-M5 and store the result in M10-M9
+add8:
+    mrs 3   ; load the LSdB of the first number
+    add 5   ; add it to the LSdB of the second number
+    mdr 9   ; store the LSdB
+
+    ldi 0   ; load 0 so its clear
+    jnc skipOne ; if the carry flag is set load 1 into source
+
+    ldi 1   ; load one if the carry flag was set
+
+skipOne:
+    mds     ; load the 1 or 0 into source
+
+    add 4   ; add the MSdB of the first number
+    mds     ; move the result back to source
+    add 6   ; add the MSdB of the second number
+    mdr 10  ; save the MSdB
+
+    ret     ; return

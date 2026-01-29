@@ -1,0 +1,25 @@
+ldi 15  ; move 15 into a memory location so we can add it to somthing  
+mdr 1
+
+ldi 8   ; load 8. So we can flex with out right shift
+mds     ; move it to the source
+
+gameloop:
+
+in      ; get user input
+mdr 0   ; save the user
+
+xor 0   ; xor the current value with the input
+mds     ; update the current value
+
+add 1   ; add 15 to the curent value. if it is zero the carry flag will not be set and the player wins 
+jnc done
+
+rro     ; right rotate the curent value
+mds     ; move it to source
+call gameloop   ; loop. (the call gets used as a unconditional jump here)
+
+
+done:
+    bell
+    halt

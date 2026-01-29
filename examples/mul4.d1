@@ -1,0 +1,82 @@
+ldi 15   ; we'll do F*E
+mdr 0
+ldi 14
+mdr 5
+
+ldi 0   ; set thing to 0
+mdr 3
+mdr 4
+mdr 6
+
+ldi 1
+mdr 13  ; set M13 to one so we can add it to our loop counter
+
+; multiply M0 by M5 and store the result in M4-M3
+ldi 12  ; we will use M14 as our counter set it to 16-4
+mdr 14
+
+mulloop:
+
+mrs 0   ;   load multiplycant
+rsh     ;   shift it right. the cf will become the lsb
+mdr 0   ; store it back
+jnc skipAdd     ; if the carry flag was set add
+
+call add8       ; add the multiplier to the result
+
+skipAdd:
+
+call lsh8   ; shift the multiplier left
+
+mrs 14      ; load our counter
+add 13      ; add 1
+mdr 14      ; store the counter back
+jnc mulloop ; if the result is not 0 repeat
+
+done:
+    halt
+
+
+; will do M4-M3 + M6-M5 and store the result back in M4-M3
+add8:
+    mrs 3   ; load the LSdB of the first number
+    add 5   ; add it to the LSdB of the second number
+    mdr 3   ; store the LSdB
+
+    ldi 0   ; load 0 so its clear
+    jnc skipOneAdd ; if the carry flag is set load 1 into source
+
+    ldi 1   ; load one if the carry flag was set
+
+skipOneAdd:
+    mds     ; load the 1 or 0 into source
+
+    add 4   ; add the MSdB of the first number
+    mds     ; move the result back to source
+    add 6   ; add the MSdB of the second number
+    mdr 4  ; save the MSdB
+
+    ret     ; return
+
+
+; will do M6-M5 << 1 and store the result back in M6-M5
+lsh8:
+    mrs 5   ; load the LSdB
+    lsh     ; shift it left
+    mdr 5   ; store the LSdB
+
+    ldi 0   ; load 0 by default
+    jnc skipOneLsh     ; load 1 if the carry flag is set
+    
+    ldi 1
+
+skipOneLsh:
+    mdr 15  ; store the 1 or 0 so we can use it later
+
+    mrs 6   ; load the MSdB
+    lsh     ; shift it left
+    mds     ; move it back to source
+    or 15   ; if the msb of the LSdB was set, set the lsb of the MSdB
+    mdr 6  ; store the MSdB
+
+    ret     ; return
