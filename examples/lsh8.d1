@@ -3,9 +3,15 @@ mdr 4
 ldi 14
 mdr 3
 
+ldi 0
+mdr 0
+
 call lsh8
 
 done:
+    mrs 10
+    add 0
+    mrs 9
     halt
 
 ; will do M4-M3 << 1 and store the result in M10-M9

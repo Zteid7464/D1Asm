@@ -1,6 +1,6 @@
-ldi 14  ; we will do 15/5
+ldi 15  ; we will do 15/5
 mdr 5
-ldi 3
+ldi 6
 mdr 0
 
 ldi 0   ; set things to 0
@@ -39,6 +39,12 @@ mdr 14      ; store it back
 jnc divloop ; loop back if there was no carry
 
 done:
+    ldi 0
+    mdr 0
+    ; output the result
+    mrs 6
+    add 0
+    mrs 2
     halt
 
 ; will do M6-M5 << 1 and store the result back in M6-M5
